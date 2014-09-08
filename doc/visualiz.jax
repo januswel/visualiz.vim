@@ -1,0 +1,93 @@
+*visualiz.txt*	見えない文字を可視化するプラグイン
+                                                Last change: 2014 Sep 08.
+
+概要						*visualiz-description*
+
+末尾の空白文字や全角スペースを自動的に可視化するプラグインです。
+
+依存						*visualiz-dependencies*
+
+{VIM が |+autocmd| 機能を持っている場合に利用できます}
+
+定義されるもの						*visualiz-provides*
+
+Augroup:
+visualiz
+	すべての autocmd は visualiz という名前の augroup に定義されます。
+	特定の VIM で無効化するには、以下のコマンドを打ちこんでください: >
+
+		:autocmd! visualiz
+
+設定						*visualiz-settings*
+
+デフォルト
+
+末尾の空白文字と全角スペースを Error ハイライトグループで可視化します。
+
+変数:
+g:visualiz_patterns
+	可視化したい文字のパターンとハイライトグループを指定します。
+	辞書を要素に持つリストでなければいけません。辞書は以下のキーと値を持っ
+	ていなければなりません。
+
+	キー		値 ~
+	name		パターン名です。すべてのパターン名を通して一意でなけれ
+			ばなりません。
+	pattern		パターンです。正規表現を書くことができます。
+	highlight	ハイライトグループ名です。存在する名前でなければなりま
+			せん。
+
+	末尾の空白文字を WarningMsg ハイライトグループで可視化したい場合、以下
+	のコードを .vimrc に書いてください: >
+
+		let g:visualiz_patterns = [
+		        \   {
+		        \       'name':      'TrailingWhiteSpace',
+		        \       'pattern':   '\s\+$',
+		        \       'highlight': 'WarningMsg'
+		        \   },
+		        \ ]
+<
+	これはデフォルト設定を上書きすることに注意してください。デフォルト設定
+	もともに使いたい場合、 g:visualiz_add 変数を使用してください。以下に記
+	載があります。
+
+	このプラグインが読み込まれた際に設定が有効になることに注意してくださ
+	い。つまり、この変数をコマンドラインから変更しても意味がありません。設
+	定を変更する場合は .vimrc に設定を書いてから VIM を再起動してくださ
+	い。
+
+g:visualiz_add
+	0 でないとき、 g:visualiz_patterns で指定した設定はデフォルト設定と
+	ともに利用されます。以下のパターンはヘルプを書く際に有用です: >
+
+		let g:visualiz_add = 1
+		let g:visualiz_patterns = [
+		        \   {
+		        \       'name':      'ASpaceBetweenSentences',
+		        \       'pattern':   '\v\.@<= \w@=',
+		        \       'highlight': 'Error'
+		        \   },
+		        \ ]
+
+無効化するには						*visualiz-disables*
+
+Variables:
+g:loaded_visualiz
+	定義されているとき、このプラグインは何もしません。無効化するときに使用
+	してください。
+
+
+==============================================================================
+
+作者
+	janus_wel <janus.wel.3@gmail.com>
+著作権
+	(c) 2014 by janus_wel
+ライセンス
+	This material may be distributed only subject to the terms and
+	conditions set forth in the Open Publication License, v1.0 or later
+	(the latest version is presently available at
+	http://www.opencontent.org/openpub/).
+
+vim:tw=78:ts=8:noet:ft=help:norl:
